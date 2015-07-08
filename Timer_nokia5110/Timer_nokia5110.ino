@@ -24,7 +24,6 @@
 
 LCD5110 myGLCD(7, 10, 11, 13, 12);
 
-extern unsigned char TinyFont[];
 extern uint8_t SmallFont[];
 
 int ledPin1 = 0;// диод команда 1
@@ -129,8 +128,7 @@ void setup() {
   beep(50);
 
   myGLCD.InitLCD();
-  //  myGLCD.setFont(SmallFont);
-  myGLCD.setFont(TinyFont);
+  myGLCD.setFont(SmallFont);
 
   digitalWrite(ledPin1, HIGH);
   digitalWrite(ledPin2, HIGH);
@@ -141,7 +139,7 @@ void setup() {
   digitalWrite(ledPinN, LOW);
 
   // Выводим режим игры
-  myGLCD.print("Выберите режим", CENTER, 10);
+  myGLCD.print("Select mode:", CENTER, 10);
   myGLCD.print(intToChar(GAME_MODE), CENTER, 30);
   myGLCD.update();
 
@@ -234,7 +232,7 @@ void loop() {
         long et = (starTime + TIME_DELAY_BEFORE_GAME - currentTime) / 1000;
         if (int(_prevTimeDelay) != int(et)) {
           myGLCD.clrScr();
-          myGLCD.print("Игра начнеться через", CENTER, 10);
+          myGLCD.print("Game start in:", CENTER, 10);
           myGLCD.print(longintToChar(et), CENTER, 30);
           myGLCD.update();
 
@@ -272,8 +270,8 @@ void setupModeStandardConfig()
       showMins = 60.0;
 
       myGLCD.clrScr();
-      myGLCD.print("Настройка времени", CENTER, 5);
-      myGLCD.print("до начала игры:", CENTER, 20);
+      myGLCD.print("Setup time", CENTER, 5);
+      myGLCD.print("to start game:", CENTER, 20);
       myGLCD.print(longintToChar(_TIME_DELAY_BEFORE_GAME), CENTER, 35);
       myGLCD.update();
 
@@ -291,8 +289,8 @@ void setupModeStandardConfig()
       showMins = 60.0;
 
       myGLCD.clrScr();
-      myGLCD.print("Настройка времени", CENTER, 5);
-      myGLCD.print("игры в минутах:", CENTER, 20);
+      myGLCD.print("Setup game", CENTER, 5);
+      myGLCD.print("time in minutes:", CENTER, 20);
       myGLCD.print(longintToChar(_TIME), CENTER, 35);
       myGLCD.update();
 
@@ -327,9 +325,9 @@ void runMode_1()
     //    printDigits(summaryTimeTeam2 / 1000 / showMins, false);
 
     myGLCD.clrScr();
-    myGLCD.print("Время команды 1: ", CENTER, 0);
+    myGLCD.print("Time Team 1:", CENTER, 0);
     myGLCD.print(longToChar(tm / showMins / 1000), CENTER, 10);
-    myGLCD.print("Время команды 2", CENTER, 24);
+    myGLCD.print("Time Team 2:", CENTER, 24);
     myGLCD.print(longintToChar(summaryTimeTeam2 / 1000 / showMins), CENTER, 34);
     myGLCD.update();
 
@@ -344,9 +342,9 @@ void runMode_1()
     //    printDigits(tm / showMins, false);
 
     myGLCD.clrScr();
-    myGLCD.print("Время команды 1: ", CENTER, 0);
+    myGLCD.print("Time Team 1:", CENTER, 0);
     myGLCD.print(longToChar(summaryTimeTeam1 / 1000 / showMins), CENTER, 10);
-    myGLCD.print("Время команды 2", CENTER, 24);
+    myGLCD.print("Time Team 2:", CENTER, 24);
     myGLCD.print(longintToChar(tm / showMins), CENTER, 34);
     myGLCD.update();
 
@@ -400,15 +398,15 @@ void runMode_2()
     long et = (starTime + TIME - currentTime) / divider;
 
     myGLCD.clrScr();
-    myGLCD.print("Время до", CENTER, 5);
-    myGLCD.print("вывода кода:", CENTER, 20);
+    myGLCD.print("Time to", CENTER, 5);
+    myGLCD.print("show code:", CENTER, 20);
     myGLCD.print(longintToChar(et), CENTER, 35);
     myGLCD.update();
 
     if (starTime + TIME < currentTime)
     {
-      myGLCD.clrScr();
-      myGLCD.update();
+      //      myGLCD.clrScr();
+      //      myGLCD.update();
       showingCode = true;
       starTime = millis();
       printCode(false);
@@ -442,7 +440,7 @@ void checkTeam1Button()
           if (GAME_MODE > GAME_COUNTS)
             GAME_MODE = 1;
           myGLCD.clrScr();
-          myGLCD.print("Выберите режим", CENTER, 10);
+          myGLCD.print("Select mode:", CENTER, 10);
           myGLCD.print(intToChar(GAME_MODE), CENTER, 30);
           myGLCD.update();
         } else if (!isCodeLength) {
@@ -450,7 +448,7 @@ void checkTeam1Button()
           if (CODE_LENGTH > 8)
             CODE_LENGTH = 1;
           myGLCD.clrScr();
-          myGLCD.print("Введите длину кода", CENTER, 10);
+          myGLCD.print("Setup code length:", CENTER, 10);
           myGLCD.print(longintToChar(CODE_LENGTH), CENTER, 30);
           myGLCD.update();
         } else if (!isCodeSetup) {
@@ -462,22 +460,22 @@ void checkTeam1Button()
         } else if (!isSetupDelay) {
           _TIME_DELAY_BEFORE_GAME += DELAY_STEP;
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("до начала игры:", CENTER, 20);
+          myGLCD.print("Setup time", CENTER, 5);
+          myGLCD.print("to start game:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME_DELAY_BEFORE_GAME), CENTER, 35);
           myGLCD.update();
         } else if (!isSetupGameTime) {
           _TIME += TIME_STEP;
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("игры в минутах:", CENTER, 20);
+          myGLCD.print("Setup game", CENTER, 5);
+          myGLCD.print("time in minutes:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME), CENTER, 35);
           myGLCD.update();
         } else if (!isShowCodeTimeSetup) {
           _TIME_SHOW_CODE += SHOW_TIME_STEP;
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("отображения кода в секундах:", CENTER, 20);
+          myGLCD.print("Setup showing", CENTER, 5);
+          myGLCD.print("code time in seconds:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME_SHOW_CODE), CENTER, 35);
           myGLCD.update();
         } else if (isGameStarted) {
@@ -504,7 +502,7 @@ void checkTeam2Button()
           if (GAME_MODE < 1)
             GAME_MODE = GAME_COUNTS;
           myGLCD.clrScr();
-          myGLCD.print("Выберите режим", CENTER, 10);
+          myGLCD.print("Select mode:", CENTER, 10);
           myGLCD.print(intToChar(GAME_MODE), CENTER, 30);
           myGLCD.update();
         } else if (!isCodeLength) {
@@ -512,7 +510,7 @@ void checkTeam2Button()
           if (CODE_LENGTH < 1)
             CODE_LENGTH = 8;
           myGLCD.clrScr();
-          myGLCD.print("Введите длину кода", CENTER, 10);
+          myGLCD.print("Setup code length:", CENTER, 10);
           myGLCD.print(longintToChar(CODE_LENGTH), CENTER, 30);
           myGLCD.update();
         } else if (!isCodeSetup) {
@@ -526,8 +524,8 @@ void checkTeam2Button()
           if (_TIME_DELAY_BEFORE_GAME < 0)
             _TIME_DELAY_BEFORE_GAME = 0;
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("до начала игры:", CENTER, 20);
+          myGLCD.print("Setup time", CENTER, 5);
+          myGLCD.print("to start game:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME_DELAY_BEFORE_GAME), CENTER, 35);
           myGLCD.update();
         } else if (!isSetupGameTime) {
@@ -535,8 +533,8 @@ void checkTeam2Button()
           if (_TIME < TIME_STEP)
             _TIME = TIME_STEP;
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("игры в минутах:", CENTER, 20);
+          myGLCD.print("Setup game", CENTER, 5);
+          myGLCD.print("time in minutes:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME), CENTER, 35);
           myGLCD.update();
         }  else if (!isShowCodeTimeSetup) {
@@ -544,8 +542,8 @@ void checkTeam2Button()
           if (_TIME_SHOW_CODE < SHOW_TIME_STEP)
             _TIME_SHOW_CODE = SHOW_TIME_STEP;
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("отображения кода в секундах:", CENTER, 20);
+          myGLCD.print("Setup showing", CENTER, 5);
+          myGLCD.print("code time in seconds:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME_SHOW_CODE), CENTER, 35);
           myGLCD.update();
         } else if (isGameStarted) {
@@ -576,15 +574,15 @@ void checkOKButton()
         {
           //Delay message
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("до начала игры:", CENTER, 20);
+          myGLCD.print("Setup time", CENTER, 5);
+          myGLCD.print("to start game:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME_DELAY_BEFORE_GAME), CENTER, 35);
           myGLCD.update();
         } else if (GAME_MODE == 2)
         {
           //Lenght message
           myGLCD.clrScr();
-          myGLCD.print("Введите длину кода", CENTER, 10);
+          myGLCD.print("Setup code length:", CENTER, 10);
           myGLCD.print(longintToChar(CODE_LENGTH), CENTER, 30);
           myGLCD.update();
         }
@@ -600,8 +598,8 @@ void checkOKButton()
         {
           //Delay message
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("до начала игры:", CENTER, 20);
+          myGLCD.print("Setup time", CENTER, 5);
+          myGLCD.print("to start game:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME_DELAY_BEFORE_GAME), CENTER, 35);
           myGLCD.update();
           isCodeSetup = true;
@@ -615,8 +613,8 @@ void checkOKButton()
 
         //Time message
         myGLCD.clrScr();
-        myGLCD.print("Настройка времени", CENTER, 5);
-        myGLCD.print("до начала игры:", CENTER, 20);
+        myGLCD.print("Setup time", CENTER, 5);
+        myGLCD.print("to start game:", CENTER, 20);
         myGLCD.print(longintToChar(_TIME), CENTER, 35);
         myGLCD.update();
       } else if (!isSetupGameTime) {
@@ -625,32 +623,32 @@ void checkOKButton()
         if (GAME_MODE == 1)
         {
           myGLCD.clrScr();
-          myGLCD.print("Нажмите кнопку ОК", CENTER, 10);
-          myGLCD.print("для старта игры игры:", CENTER, 35);
+          myGLCD.print("Press button OK", CENTER, 10);
+          myGLCD.print("to start game!", CENTER, 35);
           myGLCD.update();
         } else if (GAME_MODE == 2)
         {
           //Time message
           myGLCD.clrScr();
-          myGLCD.print("Настройка времени", CENTER, 5);
-          myGLCD.print("до начала игры:", CENTER, 20);
+          myGLCD.print("Setup time", CENTER, 5);
+          myGLCD.print("to start game:", CENTER, 20);
           myGLCD.print(longintToChar(_TIME_DELAY_BEFORE_GAME), CENTER, 35);
           myGLCD.update();
         }
       } else if (!isShowCodeTimeSetup) {
         isShowCodeTimeSetup = true;
         myGLCD.clrScr();
-        myGLCD.print("Нажмите кнопку ОК", CENTER, 10);
-        myGLCD.print("для старта игры игры:", CENTER, 35);
+        myGLCD.print("Press button OK", CENTER, 10);
+        myGLCD.print("to start game!", CENTER, 35);
         myGLCD.update();
       } else if (!isGameDelayStarted) {
         isGameDelayStarted = true;
         if (TIME_DELAY_BEFORE_GAME == 0)
           isGameStarted = true;
         myGLCD.clrScr();
-        myGLCD.print("Время команды 1: ", CENTER, 0);
+        myGLCD.print("Time Team 1:", CENTER, 0);
         myGLCD.print(longToChar(summaryTimeTeam1 / 1000 / showMins), CENTER, 10);
-        myGLCD.print("Время команды 2", CENTER, 24);
+        myGLCD.print("Time Team 2:", CENTER, 24);
         myGLCD.print(longToChar(summaryTimeTeam2 / 1000 / showMins), CENTER, 34);
         myGLCD.update();
         starTime = millis();
@@ -731,7 +729,7 @@ void printCode(boolean endCode)
     code += _CODE_NUMBER;
 
   myGLCD.clrScr();
-  myGLCD.print("КОД:", CENTER, 15);
+  myGLCD.print("CODE:", CENTER, 15);
   myGLCD.print(code, CENTER, 35);
   myGLCD.update();
 }
