@@ -48,6 +48,7 @@ int leeds[13] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 int b = 0;// перша сходинка
 int t = 12;// остання сходинка (= N - 1)
 int m = 5;// центральна сходинка (= N/2 - 1)
+int distance = 10;
 
 //константи для сходинок
 int B = 0;// перша сходинка
@@ -55,6 +56,11 @@ int T = 12;// остання сходинка (= N - 1)
 int M = 5;// центральна сходинка (= N/2 - 1)
 
 void setup() {
+  for(int j=0; i<N; j++)
+  {
+    digitalWrite(j, LOW);
+    pinMode(j, OUTPUT);
+  }
   pinMode(peerPin1, INPUT);
   pinMode(peerPin2, INPUT);
   pinMode(peerPin3, INPUT);
@@ -76,7 +82,7 @@ void loop() {
   peerVal2 = digitalRead(peerPin2);  // зчитуэмо значення з датчика руху
   peerVal3 = digitalRead(peerPin3);  // зчитуэмо значення з датчика руху
 
-  if (cm1 < 80)
+  if (cm1 < distance && cm1 != 0)
   {
     //При кожному спрацюваннi будь-якого датчика обновляэмо час руху
     motiontTime = millis();
@@ -89,7 +95,7 @@ void loop() {
     }
   }
 
-  if (cm2 < 80)
+  if (cm2 < distance && cm2 != 0)
   {
     //При кожному спрацюваннi будь-якого датчика обновляэмо час руху
     motiontTime = millis();
